@@ -14,11 +14,11 @@ def test_multiplication():
     '''Multiplication function'''
     assert multiplication(1,2) == 2
 
-def test_positive_division():
-    '''Positive Division Test'''
+def test_division():
+    '''Division function'''
     assert division(1,1) == 1
 
-def test_negative_division():
-    '''Negative Division Test'''
+def test_division_by_zero_exception():
+    '''Division function testing that I get the exception divide by zero'''
     with pytest.raises(ZeroDivisionError):
         division(10,0)
