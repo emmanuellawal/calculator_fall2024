@@ -1,6 +1,8 @@
 ''' My Calculator Test '''
 import math
+import os
 import sys
+import pytest
 from io import StringIO
 from app.calculator import calculator
 
