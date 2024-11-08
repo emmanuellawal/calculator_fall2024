@@ -4,7 +4,7 @@ from app.operations import addition, subtraction, multiplication, division
 # Import the History class from the history module.
 from app.history import History
 
-def calculator():
+def calculator(inputs=None):
     """Basic REPL calculator that performs addition, subtraction, multiplication, and division, with history support."""
 
     # Create a History object to manage the history of calculations.
