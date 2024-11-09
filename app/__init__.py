@@ -2,7 +2,6 @@ import os
 import pkgutil
 import importlib
 import sys
-from app.commands import CommandHandler, Command
 from dotenv import load_dotenv
 import logging
 import logging.config
@@ -14,7 +13,6 @@ class App:
         load_dotenv()
         self.settings = self.load_environment_variables()
         self.settings.setdefault('ENVIRONMENT', 'PRODUCTION')
-        self.command_handler = CommandHandler()
 
     def configure_logging(self):
         logging_conf_path = 'logging.conf'
@@ -31,28 +29,6 @@ class App:
 
     def get_environment_variable(self, env_var: str = 'ENVIRONMENT'):
         return self.settings.get(env_var, None)
-
-    def load_plugins(self):
-        plugins_package = 'app.plugins'
-        plugins_path = plugins_package.replace('.', '/')
-        if not os.path.exists(plugins_path):
-            logging.warning(f"Plugins directory '{plugins_path}' not found.")
-            return
-        for _, plugin_name, is_pkg in pkgutil.iter_modules([plugins_path]):
-            if is_pkg:
-                try:
-                    plugin_module = importlib.import_module(f'{plugins_package}.{plugin_name}')
-                    self.register_plugin_commands(plugin_module, plugin_name)
-                except ImportError as e:
-                    logging.error(f"Error importing plugin {plugin_name}: {e}")
-
-    def register_plugin_commands(self, plugin_module, plugin_name):
-        for item_name in dir(plugin_module):
-            item = getattr(plugin_module, item_name)
-            if isinstance(item, type) and issubclass(item, Command) and item is not Command:
-                # Command names are now explicitly set to the plugin's folder name
-                self.command_handler.register_command(plugin_name, item())
-                logging.info(f"Command '{plugin_name}' from plugin '{plugin_name}' registered.")
 
     def start(self):
         self.load_plugins()
