@@ -1,5 +1,5 @@
 import pytest
-from ..app.history import History
+from app.history import History
 
 def test_add_calculation():
     # Positive test: Add a calculation and verify it's in history
